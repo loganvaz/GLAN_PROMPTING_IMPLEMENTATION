@@ -1,0 +1,241 @@
+digraph {
+	""
+	{
+		rank=same
+		""
+	}
+	"- Social Isolation"
+	"" -> "- Social Isolation"
+	{
+		rank=same
+		"- Social Isolation"
+	}
+	"Social Isolation (PTSD)"
+	"- Social Isolation" -> "Social Isolation (PTSD)"
+	{
+		rank=same
+		"Social Isolation (PTSD)"
+	}
+	"Social Isolation (PTSD)"
+	"Social Isolation (PTSD)" -> "Social Isolation (PTSD)"
+	{
+		rank=same
+		"Social Isolation (PTSD)"
+	}
+	"- Social withdrawal (PTSD)"
+	"Social Isolation (PTSD)" -> "- Social withdrawal (PTSD)"
+	{
+		rank=same
+		"- Social withdrawal (PTSD)"
+	}
+	"- Loneliness (PTSD)"
+	"Social Isolation (PTSD)" -> "- Loneliness (PTSD)"
+	{
+		rank=same
+		"- Loneliness (PTSD)"
+	}
+	"1. Bullying (PTSD)"
+	"- Social Isolation" -> "1. Bullying (PTSD)"
+	{
+		rank=same
+		"1. Bullying (PTSD)"
+	}
+	"Physical Bullying (Bullying (PTSD))"
+	"1. Bullying (PTSD)" -> "Physical Bullying (Bullying (PTSD))"
+	{
+		rank=same
+		"Physical Bullying (Bullying (PTSD))"
+	}
+	"Verbal Bullying (Bullying (PTSD))"
+	"1. Bullying (PTSD)" -> "Verbal Bullying (Bullying (PTSD))"
+	{
+		rank=same
+		"Verbal Bullying (Bullying (PTSD))"
+	}
+	"Cyberbullying (Bullying (PTSD))"
+	"1. Bullying (PTSD)" -> "Cyberbullying (Bullying (PTSD))"
+	{
+		rank=same
+		"Cyberbullying (Bullying (PTSD))"
+	}
+	"2. Workplace Harassment (PTSD)"
+	"- Social Isolation" -> "2. Workplace Harassment (PTSD)"
+	{
+		rank=same
+		"2. Workplace Harassment (PTSD)"
+	}
+	"Workplace Harassment (PTSD)"
+	"2. Workplace Harassment (PTSD)" -> "Workplace Harassment (PTSD)"
+	{
+		rank=same
+		"Workplace Harassment (PTSD)"
+	}
+	"- Verbal Harassment (Workplace Harassment (PTSD))"
+	"2. Workplace Harassment (PTSD)" -> "- Verbal Harassment (Workplace Harassment (PTSD))"
+	{
+		rank=same
+		"- Verbal Harassment (Workplace Harassment (PTSD))"
+	}
+	"- Physical Harassment (Workplace Harassment (PTSD))"
+	"2. Workplace Harassment (PTSD)" -> "- Physical Harassment (Workplace Harassment (PTSD))"
+	{
+		rank=same
+		"- Physical Harassment (Workplace Harassment (PTSD))"
+	}
+	"- Generalized Anxiety"
+	"" -> "- Generalized Anxiety"
+	{
+		rank=same
+		"- Generalized Anxiety"
+	}
+	"Generalized Anxiety (Anxiety)"
+	"- Generalized Anxiety" -> "Generalized Anxiety (Anxiety)"
+	{
+		rank=same
+		"Generalized Anxiety (Anxiety)"
+	}
+	"Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
+	"Generalized Anxiety (Anxiety)" -> "Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
+	{
+		rank=same
+		"Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
+	}
+	"Phobias (Anxiety, Generalized Anxiety)"
+	"Generalized Anxiety (Anxiety)" -> "Phobias (Anxiety, Generalized Anxiety)"
+	{
+		rank=same
+		"Phobias (Anxiety, Generalized Anxiety)"
+	}
+	"Panic Disorder (Anxiety, Generalized Anxiety)"
+	"Generalized Anxiety (Anxiety)" -> "Panic Disorder (Anxiety, Generalized Anxiety)"
+	{
+		rank=same
+		"Panic Disorder (Anxiety, Generalized Anxiety)"
+	}
+	"1. Social Anxiety"
+	"- Generalized Anxiety" -> "1. Social Anxiety"
+	{
+		rank=same
+		"1. Social Anxiety"
+	}
+	"Crowded places (Social Anxiety)"
+	"1. Social Anxiety" -> "Crowded places (Social Anxiety)"
+	{
+		rank=same
+		"Crowded places (Social Anxiety)"
+	}
+	"Public speaking (Social Anxiety)"
+	"1. Social Anxiety" -> "Public speaking (Social Anxiety)"
+	{
+		rank=same
+		"Public speaking (Social Anxiety)"
+	}
+	"Making phone calls (Social Anxiety)"
+	"1. Social Anxiety" -> "Making phone calls (Social Anxiety)"
+	{
+		rank=same
+		"Making phone calls (Social Anxiety)"
+	}
+	"2. Panic Disorder"
+	"- Generalized Anxiety" -> "2. Panic Disorder"
+	{
+		rank=same
+		"2. Panic Disorder"
+	}
+	"Planes crashing (Panic Disorder (Specific Phobia))"
+	"2. Panic Disorder" -> "Planes crashing (Panic Disorder (Specific Phobia))"
+	{
+		rank=same
+		"Planes crashing (Panic Disorder (Specific Phobia))"
+	}
+	"Public speaking (Panic Disorder (Specific Phobia))"
+	"2. Panic Disorder" -> "Public speaking (Panic Disorder (Specific Phobia))"
+	{
+		rank=same
+		"Public speaking (Panic Disorder (Specific Phobia))"
+	}
+	"Crowded places (Panic Disorder (Agoraphobia))"
+	"2. Panic Disorder" -> "Crowded places (Panic Disorder (Agoraphobia))"
+	{
+		rank=same
+		"Crowded places (Panic Disorder (Agoraphobia))"
+	}
+	"- Perfectionism"
+	"" -> "- Perfectionism"
+	{
+		rank=same
+		"- Perfectionism"
+	}
+	"Perfectionism (Anxiety)"
+	"- Perfectionism" -> "Perfectionism (Anxiety)"
+	{
+		rank=same
+		"Perfectionism (Anxiety)"
+	}
+	"Perfectionism (Anxiety)"
+	"Perfectionism (Anxiety)" -> "Perfectionism (Anxiety)"
+	{
+		rank=same
+		"Perfectionism (Anxiety)"
+	}
+	"- Social perfectionism (Anxiety)"
+	"Perfectionism (Anxiety)" -> "- Social perfectionism (Anxiety)"
+	{
+		rank=same
+		"- Social perfectionism (Anxiety)"
+	}
+	"- Self-oriented perfectionism (Anxiety)"
+	"Perfectionism (Anxiety)" -> "- Self-oriented perfectionism (Anxiety)"
+	{
+		rank=same
+		"- Self-oriented perfectionism (Anxiety)"
+	}
+	"1. Social perfectionism"
+	"- Perfectionism" -> "1. Social perfectionism"
+	{
+		rank=same
+		"1. Social perfectionism"
+	}
+	"Social perfectionism (Perfectionism)"
+	"1. Social perfectionism" -> "Social perfectionism (Perfectionism)"
+	{
+		rank=same
+		"Social perfectionism (Perfectionism)"
+	}
+	"1. Perfectionism in academics (Social perfectionism)"
+	"1. Social perfectionism" -> "1. Perfectionism in academics (Social perfectionism)"
+	{
+		rank=same
+		"1. Perfectionism in academics (Social perfectionism)"
+	}
+	"2. Perfectionism in appearance (Social perfectionism)"
+	"1. Social perfectionism" -> "2. Perfectionism in appearance (Social perfectionism)"
+	{
+		rank=same
+		"2. Perfectionism in appearance (Social perfectionism)"
+	}
+	"2. Self-oriented perfectionism"
+	"- Perfectionism" -> "2. Self-oriented perfectionism"
+	{
+		rank=same
+		"2. Self-oriented perfectionism"
+	}
+	"Socially-prescribed perfectionism (Self-oriented perfectionism)"
+	"2. Self-oriented perfectionism" -> "Socially-prescribed perfectionism (Self-oriented perfectionism)"
+	{
+		rank=same
+		"Socially-prescribed perfectionism (Self-oriented perfectionism)"
+	}
+	"Self-evaluative perfectionism (Self-oriented perfectionism)"
+	"2. Self-oriented perfectionism" -> "Self-evaluative perfectionism (Self-oriented perfectionism)"
+	{
+		rank=same
+		"Self-evaluative perfectionism (Self-oriented perfectionism)"
+	}
+	"Concern over mistakes (Self-oriented perfectionism)"
+	"2. Self-oriented perfectionism" -> "Concern over mistakes (Self-oriented perfectionism)"
+	{
+		rank=same
+		"Concern over mistakes (Self-oriented perfectionism)"
+	}
+}

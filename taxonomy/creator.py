@@ -4,8 +4,17 @@ from typing import Iterable, List, Tuple, TypedDict
 from .prompter import prompt as prompt_gpt
 import json
 import asyncio
+import time
+try:
+    from ..config import seedList
+except:
+    from config import seedList
 
-MODEL = "gpt-3.5-turbo"
+# MODEL = "gpt-3.5-turbo"
+try:
+    from config import MODEL
+except:
+    from ..config import MODEL
 
 class Leaf(TypedDict):
     overview: str
@@ -93,14 +102,25 @@ async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int
 
     Q:List[Tuple[types.Coroutine[List[Node]], List[Tuple[str,int|None]]]] = list()
 
+
+    if (len(seedList)):
+        for seed in seedList:
+            root["children"].append(Node(children=[], topic=seed, payload=None))
+            Q.append((make_async(root["children"][-1]), levelCreator))
+    else:
+        Q.append((make_async(root), levelCreator))
+
+    
+
     # firstItem = async lambda x : (root, levelCreator)
-    Q.append((make_async(root), levelCreator))
+    
 
     currentLength = len(levelCreator)
     toPrints:List[str] = list()
     while (len(Q)):
         Qtmp = list()
         for i in range(0, len(Q), BATCH_SIZE):
+            print(f"{i} of {len(Q)}")
             batch = Q[i:i+BATCH_SIZE]  # Get the current batch
 
             promises = [item[0] for item in batch]  # Extract all promises from the batch

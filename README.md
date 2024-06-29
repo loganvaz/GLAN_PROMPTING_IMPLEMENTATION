@@ -4,3 +4,8 @@ A version of GLAN based on https://arxiv.org/abs/2402.13064 (as I understood - I
 # SETUP
 First, in .env.local set the GPT KEY for use
 Second, modify the config.py to suit your purpose
+
+# Use
+1) .env.local: add gpt key 
+2) config.py: modify inputs 
+3) run driver.py and look for output in storage/createdTaoxonomy.json
