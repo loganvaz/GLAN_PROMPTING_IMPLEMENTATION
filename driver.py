@@ -22,9 +22,9 @@ async def main():
     ]
 
     treeNumber: List[int|None] = [
-        3,
-        3,
-        3
+        5,
+        5,
+        5
     ]
 
     assert(len(treeNumber) == len(treeExamples))

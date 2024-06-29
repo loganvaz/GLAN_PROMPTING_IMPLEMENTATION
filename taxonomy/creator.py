@@ -82,6 +82,7 @@ async def propogateTree(root: Node, generalTreePrompt: str, levelCreator:List[Tu
     #propogare each of them
 
 
+BATCH_SIZE = 256
 
 async def make_async(r):
     return [r]
@@ -98,30 +99,29 @@ async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int
     currentLength = len(levelCreator)
     toPrints:List[str] = list()
     while (len(Q)):
-        print("len(Q) is ", len(Q), "currentLength is ", currentLength)
-        
-        promises = [item[0] for item in Q]  # Extract all promises from Q
-        ls = [item[1] for item in Q]  # Extract all l values from Q
-        Q.clear()  # Clear Q for the next batch of promises
+        Qtmp = list()
+        for i in range(0, len(Q), BATCH_SIZE):
+            batch = Q[i:i+BATCH_SIZE]  # Get the current batch
 
-        results = await asyncio.gather(*promises)  # Wait for all promises to resolve
-        for rs, l in zip(results, ls):
-            for r in rs:
-                if (len(l) < currentLength):
-                    currentLength = len(l)
-                    print("\n".join(toPrints))
-                    print("\n\n\n______next____level______\n\n\n")
-                    input()
-                    toPrints = list()
+            promises = [item[0] for item in batch]  # Extract all promises from the batch
+            ls = [item[1] for item in batch]  # Extract all l values from the batch
 
-                if (r["topic"]): toPrints.append(r["topic"])
-                result = propogateTree(r, generalTreePrompt, l, nodeCreator)
-                Q.append((result, l[1:]))
-                # r2 = result 
-                # l2 = l[1:]
+            results = await asyncio.gather(*promises)  # Wait for all promises in the batch to resolve
 
-                # if (len(r2)):
-                #     for rnext in r2:
-                #         Q.append((rnext, l2))
+            for rs, l in zip(results, ls):
+                for r in rs:
+                    if (len(l) < currentLength):
+                        currentLength = len(l)
+                        print("\n".join(toPrints))
+                        print("\n\n\n______next____level______\n\n\n")
+                        input()
+                        toPrints = list()
+
+                    if (r["topic"]): toPrints.append(r["topic"])
+                    result = propogateTree(r, generalTreePrompt, l, nodeCreator)
+                    Qtmp.append((result, l[1:]))
+
+        # Q = Q[BATCH_SIZE:]  # Remove the processed batch from Q
+        Q = Qtmp
 
     return root

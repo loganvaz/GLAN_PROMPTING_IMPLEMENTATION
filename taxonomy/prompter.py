@@ -2,8 +2,6 @@
 from joblib import Memory
 from openai import AsyncOpenAI
 import os
-import traceback
-import asyncio
 import time
 
 
