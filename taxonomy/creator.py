@@ -44,6 +44,9 @@ async def generateBranches(parent: Node, prompt: str, levelCreator: Tuple[str,in
     return [Node(children=[], topic= t, payload=None) for t in allTopics]
     
 async def generateLeaves(parent: Node, levelCreator: Tuple[str, int])->List[Node]:
+    if (levelCreator[1] == 0): return []
+    # print("levelCreator is ", levelCreator)
+    # print("generating leaves")
     
     sysPrompt = "You are an endpoint that will return a json object that is a list of dictionaries as described. Remember to format correctly. It is of the form [{overview: str, specifics: List[str]}] Given a topic, you will do the following: " + levelCreator[0] +"\nYou will generate " + str(levelCreator[1]) + " entires in this list. Remember, make sure the response is JSON serializable. Return nothing but the json string."
     #use the gpt prompt 

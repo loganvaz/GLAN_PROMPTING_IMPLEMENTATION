@@ -29,4 +29,4 @@ def visualize_json(json_file):
     add_nodes(graph, data)
     graph.render('graph', view=True)  # Render the graph to a file and open it
 
-visualize_json(os.path.join('storage', 'createdTaxonomy2.json'))
+visualize_json(os.path.join('storage', 'createdTaxonomy.json'))

@@ -17,26 +17,29 @@ You will want to set the following variables to get started (and can obviously c
 """
 
 #the initial list to base the tree off - in general case, leave blank and make the first tree instruction what generates this
-seedList = []# ["depression", "relation", "family", "romantic", "trauma", "anger-management", "addiction", "sexuality", "behavior"]
+seedList = []
 #node general modifications
 treeInstructions = [
-    "Generate a list of mental health disorders/things that contribute to bad mental health. This can be life circumstances (e.g. loss of loved one), mental (e.g. body dismorphia), or some combination. Try to keep each of these discrete from each other but overlap them as necessary",
-    "Break this into more specifics. This should still be a general category. Try to cover as much space as possible with as little overlap as possible. Remember to include the prior topic in this description as well",
-    "Break this down one level further, getting more specific. Remember to still include previous categories. Try to cover as much space as possible (as little overlap as possible)"
+    "Generate a list of different broad majors that students in college seek internships for. Keep it broad here.",
+    "Break these down into specific majors, adding specificity",
+    "Break these down into different skills that would almost resemble a tract within this"
 ]
 
 treeExamples = [
-    "PTSD\nOCD\nAcademic Failure",
-    "Physical Assult (PTSD)\nWar (PTSD)\nSexual Assult (PTSD)",
-    "WW1 shellshock (War (PTSD))\nWW2 shellshock (War (PTSD))\nVietnam War (War (PTSD))\nMedical Trauma (War (PTSD))"
+    ("Engineering\nLiberal Arts\nBusiness", None),
+    ("IB (Business)\nMarketting (Business)\nData Analyst (Business)", "Business"),
+    ("Data Analyst Focused on Visualization (Data Analyst (Business))\nDouble Finance Data Analyst Major (Data Analyst (Business))\nClient Focused Data Analyst (Data Analyst (Business))", "Data Analyst (Business)")
 ]
 
-treeNumber: List[int|None] = [5,3,3]
+treeNumber: List[int|None] = [10,4,6]
 
-generalInstructions = "You are a mental health professional tasked with breaking things down into broad yet distinct categories and specifying them with more time. Generate a list, but remember you are restricted to the number of examples requested. Unless told otherwise, give only the name - not a description. Include in parenthesis only the topic stem provided. IE if provided with magical and generating unicorns I would have my entry be unicorns (magical). Your goal is to take different topics and break them down into further mental health categories. Remember, add the end of the day this is about breaking things down into mental health conditions where a therapist could give helpful advice."
+generalInstructions = """You are a part of university career services that is trying to categorize students who want internships. 
+Generate a list, but remember you are restricted to the number of examples requested. Unless told otherwise, 
+give only the name - not a description. Include in parenthesis only the topic stem provided. IE if provided with magical and generating unicorns 
+I would have my entry be unicorns (magical). Your end goal is to create a graph of majors/specializations in a school that seek internships. Make sure all output is based on the input provided""".replace("\n", "")
 
 #leaf general modifications
-numClass = 5
+numClass = 4
 
 #gpt
 MODEL = "gpt-3.5-turbo"
@@ -47,13 +50,11 @@ MODEL = "gpt-3.5-turbo"
 assert(len(treeNumber) == len(treeExamples))
 assert(len(treeInstructions) == len(treeExamples))
 
-text = [instruction + "\nHere is an example:" + example for example, instruction in zip(treeExamples, treeInstructions)]
+text = [instruction + "\nHere is an example :" + example[0] + ( ("  based on the input: " + example[1]) if example[1] else "") for example, instruction in zip(treeExamples, treeInstructions)]
 
 
-classInstructionBase ="Describe different people suffering from this. Mix in broad and specific. Include demographic inforamtion, genral affects of this, how long its been going on, where it stems from, how its affected their social/economic life, etc. Mix in a few specific examples for each person. Each person should be an entry in the list (describe them in some detail in 'overview'. Then give 3 different specific instances of this impacting their life in 'specifics')\n\n"
-#DO NOT MODIFY THE BELOW LINE - if you do, you should also modify the leaf verifier function in taxonomy/creator.py
+classInstructionBase = "You will describe a few people at differnt levels of knowledge in this subejct. The list you will return will describe different levels of knowledge. Each entry of the list will have an overview which follows with a string describing the level of competence (very basic, basic, advanced, specialty, etc.). The instances array will describe projects/classes/lnowledge they ahve about this. This can include failing classes or just saying no skills for low level. For higher levels of knowledge, you should include details about projects they used."
 classInstruction =classInstructionBase + "\nReponse should be a json list where each instance is of the form {'oveview': aforementioned overview, 'specifics': [list of specific instances in their life]}"
-
 #these are what will be used by the driver
 treePrompts = list(zip(text, treeNumber))
 

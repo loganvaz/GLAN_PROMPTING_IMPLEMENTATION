@@ -4,238 +4,238 @@ digraph {
 		rank=same
 		""
 	}
-	"- Social Isolation"
-	"" -> "- Social Isolation"
+	"Computer Science"
+	"" -> "Computer Science"
 	{
 		rank=same
-		"- Social Isolation"
+		"Computer Science"
 	}
-	"Social Isolation (PTSD)"
-	"- Social Isolation" -> "Social Isolation (PTSD)"
+	"Software Development (Computer Science)"
+	"Computer Science" -> "Software Development (Computer Science)"
 	{
 		rank=same
-		"Social Isolation (PTSD)"
+		"Software Development (Computer Science)"
 	}
-	"Social Isolation (PTSD)"
-	"Social Isolation (PTSD)" -> "Social Isolation (PTSD)"
+	"Software Developer (Computer Science)"
+	"Software Development (Computer Science)" -> "Software Developer (Computer Science)"
 	{
 		rank=same
-		"Social Isolation (PTSD)"
+		"Software Developer (Computer Science)"
 	}
-	"- Social withdrawal (PTSD)"
-	"Social Isolation (PTSD)" -> "- Social withdrawal (PTSD)"
+	"Web Developer (Computer Science)"
+	"Software Development (Computer Science)" -> "Web Developer (Computer Science)"
 	{
 		rank=same
-		"- Social withdrawal (PTSD)"
+		"Web Developer (Computer Science)"
 	}
-	"- Loneliness (PTSD)"
-	"Social Isolation (PTSD)" -> "- Loneliness (PTSD)"
+	"Mobile App Developer (Computer Science)"
+	"Software Development (Computer Science)" -> "Mobile App Developer (Computer Science)"
 	{
 		rank=same
-		"- Loneliness (PTSD)"
+		"Mobile App Developer (Computer Science)"
 	}
-	"1. Bullying (PTSD)"
-	"- Social Isolation" -> "1. Bullying (PTSD)"
+	"Cybersecurity (Computer Science)"
+	"Computer Science" -> "Cybersecurity (Computer Science)"
 	{
 		rank=same
-		"1. Bullying (PTSD)"
+		"Cybersecurity (Computer Science)"
 	}
-	"Physical Bullying (Bullying (PTSD))"
-	"1. Bullying (PTSD)" -> "Physical Bullying (Bullying (PTSD))"
+	"Network Security Analyst (Cybersecurity)"
+	"Cybersecurity (Computer Science)" -> "Network Security Analyst (Cybersecurity)"
 	{
 		rank=same
-		"Physical Bullying (Bullying (PTSD))"
+		"Network Security Analyst (Cybersecurity)"
 	}
-	"Verbal Bullying (Bullying (PTSD))"
-	"1. Bullying (PTSD)" -> "Verbal Bullying (Bullying (PTSD))"
+	"Digital Forensics Investigator (Cybersecurity)"
+	"Cybersecurity (Computer Science)" -> "Digital Forensics Investigator (Cybersecurity)"
 	{
 		rank=same
-		"Verbal Bullying (Bullying (PTSD))"
+		"Digital Forensics Investigator (Cybersecurity)"
 	}
-	"Cyberbullying (Bullying (PTSD))"
-	"1. Bullying (PTSD)" -> "Cyberbullying (Bullying (PTSD))"
+	"Incident Response Specialist (Cybersecurity)"
+	"Cybersecurity (Computer Science)" -> "Incident Response Specialist (Cybersecurity)"
 	{
 		rank=same
-		"Cyberbullying (Bullying (PTSD))"
+		"Incident Response Specialist (Cybersecurity)"
 	}
-	"2. Workplace Harassment (PTSD)"
-	"- Social Isolation" -> "2. Workplace Harassment (PTSD)"
+	"Machine Learning (Computer Science)"
+	"Computer Science" -> "Machine Learning (Computer Science)"
 	{
 		rank=same
-		"2. Workplace Harassment (PTSD)"
+		"Machine Learning (Computer Science)"
 	}
-	"Workplace Harassment (PTSD)"
-	"2. Workplace Harassment (PTSD)" -> "Workplace Harassment (PTSD)"
+	"Machine Learning (Computer Science)"
+	"Machine Learning (Computer Science)" -> "Machine Learning (Computer Science)"
 	{
 		rank=same
-		"Workplace Harassment (PTSD)"
+		"Machine Learning (Computer Science)"
 	}
-	"- Verbal Harassment (Workplace Harassment (PTSD))"
-	"2. Workplace Harassment (PTSD)" -> "- Verbal Harassment (Workplace Harassment (PTSD))"
+	"Deep Learning Specialist (Machine Learning (Computer Science))"
+	"Machine Learning (Computer Science)" -> "Deep Learning Specialist (Machine Learning (Computer Science))"
 	{
 		rank=same
-		"- Verbal Harassment (Workplace Harassment (PTSD))"
+		"Deep Learning Specialist (Machine Learning (Computer Science))"
 	}
-	"- Physical Harassment (Workplace Harassment (PTSD))"
-	"2. Workplace Harassment (PTSD)" -> "- Physical Harassment (Workplace Harassment (PTSD))"
+	"AI Research Intern (Machine Learning (Computer Science))"
+	"Machine Learning (Computer Science)" -> "AI Research Intern (Machine Learning (Computer Science))"
 	{
 		rank=same
-		"- Physical Harassment (Workplace Harassment (PTSD))"
+		"AI Research Intern (Machine Learning (Computer Science))"
 	}
-	"- Generalized Anxiety"
-	"" -> "- Generalized Anxiety"
+	"Health Sciences"
+	"" -> "Health Sciences"
 	{
 		rank=same
-		"- Generalized Anxiety"
+		"Health Sciences"
 	}
-	"Generalized Anxiety (Anxiety)"
-	"- Generalized Anxiety" -> "Generalized Anxiety (Anxiety)"
+	"Nursing (Health Sciences)"
+	"Health Sciences" -> "Nursing (Health Sciences)"
 	{
 		rank=same
-		"Generalized Anxiety (Anxiety)"
+		"Nursing (Health Sciences)"
 	}
-	"Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
-	"Generalized Anxiety (Anxiety)" -> "Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
+	"Nurse Researcher (Nursing (Health Sciences))"
+	"Nursing (Health Sciences)" -> "Nurse Researcher (Nursing (Health Sciences))"
 	{
 		rank=same
-		"Somatic Symptom Disorder (Anxiety, Generalized Anxiety)"
+		"Nurse Researcher (Nursing (Health Sciences))"
 	}
-	"Phobias (Anxiety, Generalized Anxiety)"
-	"Generalized Anxiety (Anxiety)" -> "Phobias (Anxiety, Generalized Anxiety)"
+	"Clinical Nurse Educator (Nursing (Health Sciences))"
+	"Nursing (Health Sciences)" -> "Clinical Nurse Educator (Nursing (Health Sciences))"
 	{
 		rank=same
-		"Phobias (Anxiety, Generalized Anxiety)"
+		"Clinical Nurse Educator (Nursing (Health Sciences))"
 	}
-	"Panic Disorder (Anxiety, Generalized Anxiety)"
-	"Generalized Anxiety (Anxiety)" -> "Panic Disorder (Anxiety, Generalized Anxiety)"
+	"Pediatric Nurse Practitioner (Nursing (Health Sciences))"
+	"Nursing (Health Sciences)" -> "Pediatric Nurse Practitioner (Nursing (Health Sciences))"
 	{
 		rank=same
-		"Panic Disorder (Anxiety, Generalized Anxiety)"
+		"Pediatric Nurse Practitioner (Nursing (Health Sciences))"
 	}
-	"1. Social Anxiety"
-	"- Generalized Anxiety" -> "1. Social Anxiety"
+	"Physical Therapy (Health Sciences)"
+	"Health Sciences" -> "Physical Therapy (Health Sciences)"
 	{
 		rank=same
-		"1. Social Anxiety"
+		"Physical Therapy (Health Sciences)"
 	}
-	"Crowded places (Social Anxiety)"
-	"1. Social Anxiety" -> "Crowded places (Social Anxiety)"
+	"Sports Rehabilitation (Physical Therapy (Health Sciences))"
+	"Physical Therapy (Health Sciences)" -> "Sports Rehabilitation (Physical Therapy (Health Sciences))"
 	{
 		rank=same
-		"Crowded places (Social Anxiety)"
+		"Sports Rehabilitation (Physical Therapy (Health Sciences))"
 	}
-	"Public speaking (Social Anxiety)"
-	"1. Social Anxiety" -> "Public speaking (Social Anxiety)"
+	"Pediatric Physical Therapy (Physical Therapy (Health Sciences))"
+	"Physical Therapy (Health Sciences)" -> "Pediatric Physical Therapy (Physical Therapy (Health Sciences))"
 	{
 		rank=same
-		"Public speaking (Social Anxiety)"
+		"Pediatric Physical Therapy (Physical Therapy (Health Sciences))"
 	}
-	"Making phone calls (Social Anxiety)"
-	"1. Social Anxiety" -> "Making phone calls (Social Anxiety)"
+	"Geriatric Physical Therapy (Physical Therapy (Health Sciences))"
+	"Physical Therapy (Health Sciences)" -> "Geriatric Physical Therapy (Physical Therapy (Health Sciences))"
 	{
 		rank=same
-		"Making phone calls (Social Anxiety)"
+		"Geriatric Physical Therapy (Physical Therapy (Health Sciences))"
 	}
-	"2. Panic Disorder"
-	"- Generalized Anxiety" -> "2. Panic Disorder"
+	"Speech-Language Pathology (Health Sciences)"
+	"Health Sciences" -> "Speech-Language Pathology (Health Sciences)"
 	{
 		rank=same
-		"2. Panic Disorder"
+		"Speech-Language Pathology (Health Sciences)"
 	}
-	"Planes crashing (Panic Disorder (Specific Phobia))"
-	"2. Panic Disorder" -> "Planes crashing (Panic Disorder (Specific Phobia))"
+	"Speech Therapy Techniques (Speech-Language Pathology (Health Sciences))"
+	"Speech-Language Pathology (Health Sciences)" -> "Speech Therapy Techniques (Speech-Language Pathology (Health Sciences))"
 	{
 		rank=same
-		"Planes crashing (Panic Disorder (Specific Phobia))"
+		"Speech Therapy Techniques (Speech-Language Pathology (Health Sciences))"
 	}
-	"Public speaking (Panic Disorder (Specific Phobia))"
-	"2. Panic Disorder" -> "Public speaking (Panic Disorder (Specific Phobia))"
+	"Early Intervention Strategies (Speech-Language Pathology (Health Sciences))"
+	"Speech-Language Pathology (Health Sciences)" -> "Early Intervention Strategies (Speech-Language Pathology (Health Sciences))"
 	{
 		rank=same
-		"Public speaking (Panic Disorder (Specific Phobia))"
+		"Early Intervention Strategies (Speech-Language Pathology (Health Sciences))"
 	}
-	"Crowded places (Panic Disorder (Agoraphobia))"
-	"2. Panic Disorder" -> "Crowded places (Panic Disorder (Agoraphobia))"
+	"Accent Modification Specialist (Speech-Language Pathology (Health Sciences))"
+	"Speech-Language Pathology (Health Sciences)" -> "Accent Modification Specialist (Speech-Language Pathology (Health Sciences))"
 	{
 		rank=same
-		"Crowded places (Panic Disorder (Agoraphobia))"
+		"Accent Modification Specialist (Speech-Language Pathology (Health Sciences))"
 	}
-	"- Perfectionism"
-	"" -> "- Perfectionism"
+	Communications
+	"" -> Communications
 	{
 		rank=same
-		"- Perfectionism"
+		Communications
 	}
-	"Perfectionism (Anxiety)"
-	"- Perfectionism" -> "Perfectionism (Anxiety)"
+	"Public Relations (Communications)"
+	Communications -> "Public Relations (Communications)"
 	{
 		rank=same
-		"Perfectionism (Anxiety)"
+		"Public Relations (Communications)"
 	}
-	"Perfectionism (Anxiety)"
-	"Perfectionism (Anxiety)" -> "Perfectionism (Anxiety)"
+	"Social Media Specialist (Public Relations/Communications)"
+	"Public Relations (Communications)" -> "Social Media Specialist (Public Relations/Communications)"
 	{
 		rank=same
-		"Perfectionism (Anxiety)"
+		"Social Media Specialist (Public Relations/Communications)"
 	}
-	"- Social perfectionism (Anxiety)"
-	"Perfectionism (Anxiety)" -> "- Social perfectionism (Anxiety)"
+	"Event Coordinator (Public Relations/Communications)"
+	"Public Relations (Communications)" -> "Event Coordinator (Public Relations/Communications)"
 	{
 		rank=same
-		"- Social perfectionism (Anxiety)"
+		"Event Coordinator (Public Relations/Communications)"
 	}
-	"- Self-oriented perfectionism (Anxiety)"
-	"Perfectionism (Anxiety)" -> "- Self-oriented perfectionism (Anxiety)"
+	"Crisis Communications Manager (Public Relations/Communications)"
+	"Public Relations (Communications)" -> "Crisis Communications Manager (Public Relations/Communications)"
 	{
 		rank=same
-		"- Self-oriented perfectionism (Anxiety)"
+		"Crisis Communications Manager (Public Relations/Communications)"
 	}
-	"1. Social perfectionism"
-	"- Perfectionism" -> "1. Social perfectionism"
+	"Social Media Management (Communications)"
+	Communications -> "Social Media Management (Communications)"
 	{
 		rank=same
-		"1. Social perfectionism"
+		"Social Media Management (Communications)"
 	}
-	"Social perfectionism (Perfectionism)"
-	"1. Social perfectionism" -> "Social perfectionism (Perfectionism)"
+	"Content Creation (Social Media Management (Communications))"
+	"Social Media Management (Communications)" -> "Content Creation (Social Media Management (Communications))"
 	{
 		rank=same
-		"Social perfectionism (Perfectionism)"
+		"Content Creation (Social Media Management (Communications))"
 	}
-	"1. Perfectionism in academics (Social perfectionism)"
-	"1. Social perfectionism" -> "1. Perfectionism in academics (Social perfectionism)"
+	"Community Engagement (Social Media Management (Communications))"
+	"Social Media Management (Communications)" -> "Community Engagement (Social Media Management (Communications))"
 	{
 		rank=same
-		"1. Perfectionism in academics (Social perfectionism)"
+		"Community Engagement (Social Media Management (Communications))"
 	}
-	"2. Perfectionism in appearance (Social perfectionism)"
-	"1. Social perfectionism" -> "2. Perfectionism in appearance (Social perfectionism)"
+	"Analytics and Reporting (Social Media Management (Communications))"
+	"Social Media Management (Communications)" -> "Analytics and Reporting (Social Media Management (Communications))"
 	{
 		rank=same
-		"2. Perfectionism in appearance (Social perfectionism)"
+		"Analytics and Reporting (Social Media Management (Communications))"
 	}
-	"2. Self-oriented perfectionism"
-	"- Perfectionism" -> "2. Self-oriented perfectionism"
+	"Journalism (Communications)"
+	Communications -> "Journalism (Communications)"
 	{
 		rank=same
-		"2. Self-oriented perfectionism"
+		"Journalism (Communications)"
 	}
-	"Socially-prescribed perfectionism (Self-oriented perfectionism)"
-	"2. Self-oriented perfectionism" -> "Socially-prescribed perfectionism (Self-oriented perfectionism)"
+	"Investigative Journalism (Journalism (Communications))"
+	"Journalism (Communications)" -> "Investigative Journalism (Journalism (Communications))"
 	{
 		rank=same
-		"Socially-prescribed perfectionism (Self-oriented perfectionism)"
+		"Investigative Journalism (Journalism (Communications))"
 	}
-	"Self-evaluative perfectionism (Self-oriented perfectionism)"
-	"2. Self-oriented perfectionism" -> "Self-evaluative perfectionism (Self-oriented perfectionism)"
+	"Broadcast Journalism (Journalism (Communications))"
+	"Journalism (Communications)" -> "Broadcast Journalism (Journalism (Communications))"
 	{
 		rank=same
-		"Self-evaluative perfectionism (Self-oriented perfectionism)"
+		"Broadcast Journalism (Journalism (Communications))"
 	}
-	"Concern over mistakes (Self-oriented perfectionism)"
-	"2. Self-oriented perfectionism" -> "Concern over mistakes (Self-oriented perfectionism)"
+	"Digital Journalism (Journalism (Communications))"
+	"Journalism (Communications)" -> "Digital Journalism (Journalism (Communications))"
 	{
 		rank=same
-		"Concern over mistakes (Self-oriented perfectionism)"
+		"Digital Journalism (Journalism (Communications))"
 	}
 }
