@@ -2,6 +2,7 @@
 import types
 from typing import Iterable, List, Tuple, TypedDict
 from .prompter import prompt as prompt_gpt
+from .types import Node, Leaf
 import json
 import asyncio
 import time
@@ -16,21 +17,13 @@ try:
 except:
     from ..config import MODEL
 
-class Leaf(TypedDict):
-    overview: str
-    specifics: List[str]
-    parent: 'Node'
 
-class Node(TypedDict):
-    children: List['Node']
-    topic: str|None
-    payload: None|Leaf 
 
 async def generateBranches(parent: Node, prompt: str, levelCreator: Tuple[str,int|None])->List[Node]:
     # construct our gpt prompt
     thisPrompt = levelCreator[0]
-    if (parent["topic"]):
-        thisPrompt += "Consider " + parent["topic"]
+    if (parent.topic):
+        thisPrompt += "Consider " + parent.topic
     if (levelCreator[1]):
         prompt += "\nYou should generate " + str(levelCreator[1]) + " examples."
     
@@ -61,7 +54,7 @@ async def generateLeaves(parent: Node, levelCreator: Tuple[str, int])->List[Node
             assert(isinstance(item["specifics"], list))
              
 
-    allLeaves = await prompt_gpt(sysPrompt, parent["topic"], MODEL, verifier)
+    allLeaves = await prompt_gpt(sysPrompt, parent.topic, MODEL, verifier)
     # print("allLeaves is ", allLeaves)
     #parse them into multiple leaves
 
@@ -78,14 +71,14 @@ async def propogateTree(root: Node, generalTreePrompt: str, levelCreator:List[Tu
         #generate leaves and add them 
         leaves = await generateLeaves(root, nodeCreator)
         for leaf in leaves:
-            root["children"].append(leaf)
+            root.children.append(leaf)
         return []
     
     #get all branches
     branches = await generateBranches(root, generalTreePrompt, levelCreator[0])
     for branch in branches:
         # propogateTree(branch, generalTreePrompt, levelCreator[1:], nodeCreator)
-        root["children"].append(branch)
+        root.children.append(branch)
     return branches
 
     #propogare each of them
@@ -98,15 +91,15 @@ async def make_async(r):
 
 async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int|None]], nodeCreator: Tuple[str, int])->Node:
     #create the root node
-    root = Node(children=[], topic="", payload=None)
+    root = Node[Node](children=[], topic="", payload=None)
 
     Q:List[Tuple[types.Coroutine[List[Node]], List[Tuple[str,int|None]]]] = list()
 
 
     if (len(seedList)):
         for seed in seedList:
-            root["children"].append(Node(children=[], topic=seed, payload=None))
-            Q.append((make_async(root["children"][-1]), levelCreator))
+            root.children.append(Node(children=[], topic=seed, payload=None))
+            Q.append((make_async(root.children[-1]), levelCreator))
     else:
         Q.append((make_async(root), levelCreator))
 
@@ -137,7 +130,7 @@ async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int
                         input()
                         toPrints = list()
 
-                    if (r["topic"]): toPrints.append(r["topic"])
+                    if (r.topic): toPrints.append(r.topic)
                     result = propogateTree(r, generalTreePrompt, l, nodeCreator)
                     Qtmp.append((result, l[1:]))
 

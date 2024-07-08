@@ -17,21 +17,21 @@ You will want to set the following variables to get started (and can obviously c
 """
 
 #the initial list to base the tree off - in general case, leave blank and make the first tree instruction what generates this
-seedList = []# ["depression", "relation", "family", "romantic", "trauma", "anger-management", "addiction", "sexuality", "behavior"]
+seedList = ["depression", "relation", "family", "romantic", "trauma", "anger-management", "addiction", "sexuality", "behavior"]
 #node general modifications
 treeInstructions = [
-    "Generate a list of mental health disorders/things that contribute to bad mental health. This can be life circumstances (e.g. loss of loved one), mental (e.g. body dismorphia), or some combination. Try to keep each of these discrete from each other but overlap them as necessary",
+    # "Generate a list of mental health disorders/things that contribute to bad mental health. This can be life circumstances (e.g. loss of loved one), mental (e.g. body dismorphia), or some combination. Try to keep each of these discrete from each other but overlap them as necessary",
     "Break this into more specifics. This should still be a general category. Try to cover as much space as possible with as little overlap as possible. Remember to include the prior topic in this description as well",
     "Break this down one level further, getting more specific. Remember to still include previous categories. Try to cover as much space as possible (as little overlap as possible)"
 ]
 
 treeExamples = [
-    "PTSD\nOCD\nAcademic Failure",
+    # "PTSD\nOCD\nAcademic Failure",
     "Physical Assult (PTSD)\nWar (PTSD)\nSexual Assult (PTSD)",
     "WW1 shellshock (War (PTSD))\nWW2 shellshock (War (PTSD))\nVietnam War (War (PTSD))\nMedical Trauma (War (PTSD))"
 ]
 
-treeNumber: List[int|None] = [5,3,3]
+treeNumber: List[int|None] = [3,3]
 
 generalInstructions = "You are a mental health professional tasked with breaking things down into broad yet distinct categories and specifying them with more time. Generate a list, but remember you are restricted to the number of examples requested. Unless told otherwise, give only the name - not a description. Include in parenthesis only the topic stem provided. IE if provided with magical and generating unicorns I would have my entry be unicorns (magical). Your goal is to take different topics and break them down into further mental health categories. Remember, add the end of the day this is about breaking things down into mental health conditions where a therapist could give helpful advice."
 
