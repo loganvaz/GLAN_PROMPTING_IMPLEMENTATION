@@ -2,35 +2,28 @@
 import types
 from typing import Iterable, List, Tuple, TypedDict
 from .prompter import prompt as prompt_gpt
+from .types import Node, Leaf
 import json
 import asyncio
 import time
 try:
-    from ..config import seedList
+    from ..internshipConfig import seedList
 except:
-    from config import seedList
+    from internshipConfig import seedList
 
 # MODEL = "gpt-3.5-turbo"
 try:
-    from config import MODEL
+    from internshipConfig import MODEL
 except:
-    from ..config import MODEL
+    from ..internshipConfig import MODEL
 
-class Leaf(TypedDict):
-    overview: str
-    specifics: List[str]
-    parent: 'Node'
 
-class Node(TypedDict):
-    children: List['Node']
-    topic: str|None
-    payload: None|Leaf 
 
 async def generateBranches(parent: Node, prompt: str, levelCreator: Tuple[str,int|None])->List[Node]:
     # construct our gpt prompt
     thisPrompt = levelCreator[0]
-    if (parent["topic"]):
-        thisPrompt += "Consider " + parent["topic"]
+    if (parent.topic):
+        thisPrompt += "Consider " + parent.topic
     if (levelCreator[1]):
         prompt += "\nYou should generate " + str(levelCreator[1]) + " examples."
     
@@ -39,7 +32,6 @@ async def generateBranches(parent: Node, prompt: str, levelCreator: Tuple[str,in
     #parse them into multiple topics
     # print("output is ", output)
     allTopics = [o for o in output.split("\n") if len(o.strip())]
-    print("allTopics is ", allTopics)
 
     return [Node(children=[], topic= t, payload=None) for t in allTopics]
     
@@ -48,28 +40,30 @@ async def generateLeaves(parent: Node, levelCreator: Tuple[str, int])->List[Node
     # print("levelCreator is ", levelCreator)
     # print("generating leaves")
     
-    sysPrompt = "You are an endpoint that will return a json object that is a list of dictionaries as described. Remember to format correctly. It is of the form [{overview: str, specifics: List[str]}] Given a topic, you will do the following: " + levelCreator[0] +"\nYou will generate " + str(levelCreator[1]) + " entires in this list. Remember, make sure the response is JSON serializable. Return nothing but the json string."
+    sysPrompt = "You are an endpoint that will return a json object that is a dictionary as described. Remember to format correctly. Given a topic, you will do the following: " + levelCreator[0] +"\nYou will generate " + str(levelCreator[1]) + " entires in this list. Remember, make sure the response is JSON serializable. Return nothing but the json string."
     #use the gpt prompt 
 
     def verifier(s:str):
         # print("s is ", s)
         _json = json.loads(s)
-        if (not isinstance(_json, list)):
-            raise Exception("Expected a list")
+        # if (not isinstance(_json, list)):
+            # raise Exception("Expected a list")
         for item in _json:
+            pass
             # print("item is ", item)
-            assert("overview" in item)
-            assert("specifics" in item)
-            assert(isinstance(item["overview"], str))
-            assert(isinstance(item["specifics"], list))
+            # assert("overview" in item)
+            # assert("specifics" in item)
+            # assert(isinstance(item["overview"], str))
+            # assert(isinstance(item["specifics"], list))
              
 
-    allLeaves = await prompt_gpt(sysPrompt, parent["topic"], MODEL, verifier)
+    allLeaves = await prompt_gpt(sysPrompt, parent.topic, MODEL, verifier)
     # print("allLeaves is ", allLeaves)
     #parse them into multiple leaves
 
     _json = json.loads(allLeaves)
-    return [Node(children= [], topic=None, payload = leaf) for leaf in _json]
+    if (isinstance(_json, type([]))): return [Node(children= [], topic=None, payload = leaf) for leaf in _json]
+    return [Node(children= [], topic=k, payload = v) for k,v in _json.items()]
 
 
     #return all the Nodes
@@ -81,14 +75,14 @@ async def propogateTree(root: Node, generalTreePrompt: str, levelCreator:List[Tu
         #generate leaves and add them 
         leaves = await generateLeaves(root, nodeCreator)
         for leaf in leaves:
-            root["children"].append(leaf)
+            root.children.append(leaf)
         return []
     
     #get all branches
     branches = await generateBranches(root, generalTreePrompt, levelCreator[0])
     for branch in branches:
         # propogateTree(branch, generalTreePrompt, levelCreator[1:], nodeCreator)
-        root["children"].append(branch)
+        root.children.append(branch)
     return branches
 
     #propogare each of them
@@ -101,15 +95,15 @@ async def make_async(r):
 
 async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int|None]], nodeCreator: Tuple[str, int])->Node:
     #create the root node
-    root = Node(children=[], topic="", payload=None)
+    root = Node[Node](children=[], topic="", payload=None)
 
     Q:List[Tuple[types.Coroutine[List[Node]], List[Tuple[str,int|None]]]] = list()
 
 
     if (len(seedList)):
         for seed in seedList:
-            root["children"].append(Node(children=[], topic=seed, payload=None))
-            Q.append((make_async(root["children"][-1]), levelCreator))
+            root.children.append(Node(children=[], topic=seed, payload=None))
+            Q.append((make_async(root.children[-1]), levelCreator))
     else:
         Q.append((make_async(root), levelCreator))
 
@@ -140,7 +134,7 @@ async def createTaxonomy(generalTreePrompt: str, levelCreator:List[Tuple[str,int
                         input()
                         toPrints = list()
 
-                    if (r["topic"]): toPrints.append(r["topic"])
+                    if (r.topic): toPrints.append(r.topic)
                     result = propogateTree(r, generalTreePrompt, l, nodeCreator)
                     Qtmp.append((result, l[1:]))
 

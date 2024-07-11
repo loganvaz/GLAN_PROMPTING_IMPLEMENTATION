@@ -20,24 +20,26 @@ You will want to set the following variables to get started (and can obviously c
 seedList = []
 #node general modifications
 treeInstructions = [
-    "Generate a list of different industries. Keep it broad.",
-    "Choose a few companies from each of the industry. Choose a mix of small, medium, large, etc Return only the company name..",
-    "For the company, make a list of different roles that are available. Include only the role title and the company name in paranethesis. INCLUDE NOTHING ELSE. Make sure to only use line breaks to seperate companies."
+    "Generate a list of different broad majors that students in college seek internships for. Keep it broad here.",
+    "Break these down into specific majors, adding specificity",
+    "Break these down into different skills that would almost resemble a tract within this"
 ]
 
 treeExamples = [
-    ("Investment Banking\nSoftware\nInformation\nConstruction", None),
-    ("Apple\nMicrosoft\nEpic\nJane Street\nClari", "Software"),
-    ("Data Analyst (Clari)\nAccountant (Clari)\nSoftware Engineer (Clari)", "Clari")
+    ("Engineering\nLiberal Arts\nBusiness", None),
+    ("IB (Business)\nMarketting (Business)\nData Analyst (Business)", "Business"),
+    ("Data Analyst Focused on Visualization (Data Analyst (Business))\nDouble Finance Data Analyst Major (Data Analyst (Business))\nClient Focused Data Analyst (Data Analyst (Business))", "Data Analyst (Business)")
 ]
 
-treeNumber: List[int|None] = [5,3,2]
+treeNumber: List[int|None] = [10,4,6]
 
-generalInstructions = """You are a part of university career services that is trying to categorize different companies and the positions available within them. You will then generate sample postings they might make. Include in parenthesis only the topic stem provided. IE if provided with magical and generating unicorns 
+generalInstructions = """You are a part of university career services that is trying to categorize students who want internships. 
+Generate a list, but remember you are restricted to the number of examples requested. Unless told otherwise, 
+give only the name - not a description. Include in parenthesis only the topic stem provided. IE if provided with magical and generating unicorns 
 I would have my entry be unicorns (magical). Your end goal is to create a graph of majors/specializations in a school that seek internships. Make sure all output is based on the input provided""".replace("\n", "")
 
 #leaf general modifications
-numClass = -1
+numClass = 4
 
 #gpt
 MODEL = "gpt-3.5-turbo"
@@ -51,8 +53,8 @@ assert(len(treeInstructions) == len(treeExamples))
 text = [instruction + "\nHere is an example :" + example[0] + ( ("  based on the input: " + example[1]) if example[1] else "") for example, instruction in zip(treeExamples, treeInstructions)]
 
 
-classInstructionBase = "You will generate a list of sample emails to a candidates as well as the job posting. You will return a dictinary with the following keys: posting, rejection, application, asessment, interview, offer. For each of these, you will write a sample email corresponding to that category (rejecting candidate, acknowledging application, sending an assessment, offering an interview, giving an offer)"
-classInstruction =classInstructionBase + "\nReponse should be a json dictionary where each instance is of the form {'posting': internship posting, 'rejection': rejection email, 'application': application email, 'assessment': assessment email, 'interview': interview email, 'offer': offer email}. Adress all communciations to a person named Jane. For each of these, just return the text data associated (each key should map to a stirng)"
+classInstructionBase = "You will describe a few people at differnt levels of knowledge in this subejct. The list you will return will describe different levels of knowledge. Each entry of the list will have an overview which follows with a string describing the level of competence (very basic, basic, advanced, specialty, etc.). The instances array will describe projects/classes/lnowledge they ahve about this. This can include failing classes or just saying no skills for low level. For higher levels of knowledge, you should include details about projects they used."
+classInstruction =classInstructionBase + "\nReponse should be a json list where each instance is of the form {'oveview': aforementioned overview, 'specifics': [list of specific instances in their life]}"
 #these are what will be used by the driver
 treePrompts = list(zip(text, treeNumber))
 

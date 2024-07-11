@@ -4,7 +4,7 @@ from typing import List
 import asyncio
 from dotenv import load_dotenv
 
-from config import generalInstructions, treePrompts, leafInstructions
+from internshipConfig import generalInstructions, treePrompts, leafInstructions
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env.local"))
 
@@ -18,7 +18,7 @@ async def main():
     storeDir = os.path.join(os.path.dirname(__file__), "taxonomy", "storage","createdTaxonomy.json")
     import json
     with open(storeDir, 'w') as f:
-        json.dump(graph, f)
+        json.dump(graph.toJson(), f)
 
 
 asyncio.run(main())
