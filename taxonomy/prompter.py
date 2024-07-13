@@ -1,14 +1,18 @@
 
+import traceback
 from joblib import Memory
-from openai import AsyncOpenAI
+# from openai import AsyncOpenAI
+import openai
 import os
 import time
 
 
 _dirname = os.path.dirname(__file__)
 
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+
 memory = Memory(os.path.join(_dirname, "etc", "gpt_prompt_cache_dir"))
-client = AsyncOpenAI()
+client = openai.AsyncOpenAI()
 
 @memory.cache(ignore=["verifier", "cnt"])
 async def prompt(sysPrompt: str, text:str, model:str="gpt-3.5-turbo", verifier=lambda x :x, cnt = 5)->str:
@@ -23,15 +27,20 @@ async def prompt(sysPrompt: str, text:str, model:str="gpt-3.5-turbo", verifier=l
       toRet = completion.choices[0].message.content
       try:
          verifier(toRet)
-      except:
+      except Exception as E:
+         print("Exception is ", E)
+         traceback.print_exc()
          print("recurse")
-         return await prompt(sysPrompt, text, model, verifier)
+         if (cnt > 0):
+            return await prompt(sysPrompt, text, model, verifier, cnt-1)
+         raise Exception("BAD FORMAT TOO MANY TIMES")
       return toRet
    except Exception as E:
-      #  print(E)
-      #  traceback.print_exc()
+       print("bad gpt req of ", E)
        time.sleep(3 * (5-cnt))
-       if (cnt != 0): 
+       if (cnt > 0): 
           return await prompt(sysPrompt, text, model, verifier, cnt-1)
        print("bad text is ", text)
+       print(E)
+       traceback.print_exc()
        raise Exception("GPT ERROR")

@@ -1,22 +1,54 @@
 import json
 import os
 import random
-from typing import List, Callable, Tuple
+from typing import Callable, Dict, List, Tuple
 
 from taxonomy.types import Leaf
-from datasets import load_dataset, load_from_disk
 
-#load hugginfance data
-dir = os.path.dirname(__file__)
-counsel_chat_nb_pth = os.path.join(dir,"etc","counsel-chat-nb")
-if (False):
-    dataset = load_dataset("nbertagnolli/counsel-chat")
-    dataset.save_to_disk(counsel_chat_nb_pth)
-else:
-    dataset = load_from_disk(counsel_chat_nb_pth)
-allData = dataset["train"]
-allQs = allData["questionText"]
-allAs = allData["answerText"]
+allQs = list()
+allAs = list()
+#load user profiles
+dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "functions","databases", "profiles")
+jsonPath = os.path.join(dir, "just_resume.json")
+with open(jsonPath, 'r') as f:
+    data = json.load(f)
+    for k, v in data.items():
+        del v["embedding"]
+        data[k] = v
+qDict = data
+
+
+getPostingLookup = dict()
+def get_posting(postingId:str):
+    dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "functions","databases", "postings", "just_posting.json")
+    if ((dir, postingId) in getPostingLookup): return getPostingLookup[(dir, postingId)]
+    with open(dir, 'r') as f:
+        data = json.load(f)
+        selectedPosting = data[postingId]
+        print("selectedPosting is ", selectedPosting)
+        del selectedPosting["embedding"]
+        getPostingLookup[(dir, postingId)] = selectedPosting
+        return selectedPosting
+
+
+
+#for each of these, we can make a better/worse tuple
+dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "functions","training_examples", "train", "hand_labeled")
+jsonPath = os.path.join(dir, "results.json")
+with open(jsonPath, 'r') as f:
+    data = json.load(f)
+    for uid, metaDatas in data.items():
+        print("\n"*10)
+        for metaData in metaDatas:
+            print(metaData)
+            orderedPostings = metaData["postingIds"]
+            for idx, postingId in enumerate(orderedPostings):
+                for betterPostingId in orderedPostings[idx+1:]:
+                    allAs.append({
+                        "worse": get_posting(postingId),
+                        "better": get_posting(betterPostingId)
+                    })
+                    allQs.append(qDict[uid])
 
 newline = "\n"
 
@@ -27,61 +59,84 @@ def choseQ(seed:int)->str:
     random.seed(seed)
     return random.choice(allQs)
 
-def getTextFromSample(sample:List[Leaf], seedGenerator: Callable[[str], int])->Tuple[str, str]:
+def choseA(seed:int)->Dict[str,any]:
+    """
+    given a seed, return a post
+    """
+    random.seed(seed)
+    q = random.choice(allQs)
+    idx = allQs.index(q)
+    return allAs[idx]
+
+def getTextFromSample(sample:List[Leaf], seedGenerator: Callable[[str], int])->Tuple[str, str, Callable[[str], any]]:
     """
     given a list of leafs and a function to get ranodm seed, return tuple of (basePrompt, sysPrompt)
     """
-    chosen = sample[0]
-    chosenSpecific = chosen["specifics"][-1]
+
+    skillSets = "\n".join([s["overview"] for s in sample])
+    # print("sample is ", sample)
+    projects = "\n".join([ "\n".join([str(s_) for s_ in s.get("specifics", s.get("instances"))]) for s in sample])
 
     basePrompt = f"""
-        Consider the following person: {chosen["overview"]}
-        The following has occured in their life: {newline.join(chosen["specifics"][:-1])}
+        Consider the following person with the following skill sets: {skillSets}
+        They have worked on the following projects: {projects}
 
-        This has just happened {chosenSpecific} and they are writing a message to a counselor. Please transcribe their message.
+        You will use this base knowledge to create a profile for them (similar to the one you will be provided as an example). Output should be a json of the correct format. Make sure to make the resume about the same length as provided.
     """
 
     sysPrompt = f"""
-        You are a data generator who is focused on getting into the minds of people who are in distress. You will be given a prompt that describes a person and will respond with a post that they would make to a counselor.
-
-        Here is an example of the kind of post you might generate: 
-
+        You are a data generator generating sample profiles for users in a job searching database. Here is an example below:
         {choseQ(seedGenerator(basePrompt))}
-
-        Remember, you are writing as the person who may or may not know what all underlies the condition they have. Write as that person would on social media.
     """
+    def verifier(s):
+        print("s is ", s)
+        j = json.loads(s)
+        assert("userId" in j)
+        #assert type is string
+        assert(isinstance(j["userId"], str))
+        assert("major" in j)
+        assert(isinstance(j["major"], str))
+        assert("gradYear" in j)
+        # j["gradYear"] = int(j["gradYear"])
+        # assert(isinstance(j["gradYear"], int))
+        assert("positionInterestList" in j)
+        assert(isinstance(j["positionInterestList"], list))
+        for item in j["positionInterestList"]:
+            assert(isinstance(item, str))
+        assert("resume" in j)
+        assert(isinstance(j["resume"], str))
+        return j
 
-    return basePrompt, sysPrompt
+    return basePrompt, sysPrompt, verifier
 
-def getAnswerTextFromSample(sample: List[Leaf], qText: str, seedGenerator: Callable[[str], int])->Tuple[str,str,Callable[[str],any]]:
+def getAnswerTextFromSample(sample: List[Leaf], qText: str, seedGenerator: Callable[[str], int], input: any)->Tuple[str,str,Callable[[str],any]]:
     """
     given baseText, qText, and a function to get random seed, return tuple of (basePrompt, sysPrompt, verifier)
     """
 
     open = "{"
     close = "}"
+    
+    A = choseA(seedGenerator(qText))
+    Q = choseQ(seedGenerator(qText))
 
     sysPrompt = f"""
-        You are to represent two mental health counselors who are going to respond to the a post from the user.
+        You are to come up with two job postings for an input user. One will be a better fit for them. The other will be a worse fit for them.
+                
+        There can be a variety of reasons for better/worse fit. The candidate might be overqualified for one position, the pay might be wrong, the skill set might not align, etc. But one should be a better fit (i.e. one if they can only apply to one, there is one they should apply to).
 
-        You will return each response. Your response will be json serializable (include only the json data) and will be a dictionary of {open}'worse': worseResponse, 'better': betterResponse{close}.
+        Here is a sample input/output pair:
 
-        The first entry should be an alright response but should lack empathy, key instruction, or understanding. The second response should be the best possible response - as if multitple psychological professionals had spent hours crafting it.
-
-        Here is a sample of what you would return for instance in response to the question: 	
-            
-        Input: I have so many issues to address. I have a history of sexual abuse, I’m a breast cancer survivor and I am a lifetime insomniac. I have a long history of depression and I’m beginning to have anxiety. I have low self esteem but I’ve been happily married for almost 35 years. I’ve never had counseling about any of this. Do I have too many issues to address in counseling?
-
-        Return two responses from a therapist to the input (a worse one and a better one) along with an explanation why. Try to make each therapist responses around 5 sentences:
+        Input: {Q}
+        Return two responses from a therapist to the input (a worse one and a better one) along with an explanation why. Make each look like a proper posting as passed in but change the data. Make sure one is the better choice and explain why the one under the "better" key is better than the one under the "worse" key. Use the exact key words.:
         {open}
-            "worse": "Not at all my dear. Human beings are complex creatures, and in my opinion, our issues interconnect in a nuanced web between our levels of being (for example, mind, body, and spirit). Everything you bring up affects all three. The truly beautiful thing about the human body is that when you begin to work on one, the others improve as well! I would encourage you to seek out a counselor who's style and approach speaks to you and start with whichever issue feels most pressing to you. A skilled therapist will flow with you at your own pace and make recommendations to other professionals (e.g., physicians, holistic practitioners, EMDR specialists for trauma etc) as needed to complement the psychotherapy work you're doing with him or her to help you find the total healing you seek.!",
-            "better": "It is very common for people to have multiple issues that they want to (and need to) address in counseling.  I have had clients ask that same question and through more exploration, there is often an underlying fear that they  "can't be helped" or that they will "be too much for their therapist." I don't know if any of this rings true for you. But, most people have more than one problem in their lives and more often than not,  people have numerous significant stressors in their lives.  Let's face it, life can be complicated! Therapists are completely ready and equipped to handle all of the issues small or large that a client presents in session. Most therapists over the first couple of sessions will help you prioritize the issues you are facing so that you start addressing the issues that are causing you the most distress.  You can never have too many issues to address in counseling.  All of the issues you mention above can be successfully worked through in counseling.",
-            "why": "The first one is too general and begins somewhat inappropriately. The second goes into more helpful specifics."
-
+            "worse": {A["worse"]},
+            "better":{A["better"]},
+            "why": "enter an explanation on why one is better or worse here"
         {close}"""
 
 
-    thisPrompt = qText
+    thisPrompt = str(input)
 
     def verifier(txt):
         print("txt is ", txt)

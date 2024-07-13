@@ -24,17 +24,27 @@ Steps
             hash for sample selection(s) for answers
 """
 
+GENERATION = "0.0.0"
+
 def TODO():
     raise Exception("not done yet")
 
 import asyncio
-from typing import List, Optional, Tuple, TypeVar
-from data_generator_internshipConfig import getAnswerTextFromSample, getTextFromSample
+from typing import List, Optional, Tuple
+from data_generator_config import getAnswerTextFromSample, getTextFromSample
 from taxonomy.types import Node, Leaf
 from taxonomy.prompter import prompt
 from pathlib import Path
 import os
 import json
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env.local"))
+import time
+
+time.sleep(10)
+
+
 dir = os.path.dirname(__file__)
 qDir = os.path.join(dir, "qas", "q")
 aDir = os.path.join(dir, "qas", "a")
@@ -132,15 +142,16 @@ import hashlib
 def hash_text(text:str):
     hash_object = hashlib.md5(text.encode())
     hash_int = int(hash_object.hexdigest(), 16)
+    random.seed(has_int)
     return hash_int
     # random.seed(hash_int)
     # return random.sample(toSample, k)
 
 #for k in NUM_SAMPLES
-NUM_SAMPLES = 256
-NUM_LEAFS = 2
-LEVEL = 2
-BATCH_SIZE = 4
+NUM_SAMPLES = 512
+NUM_LEAFS = 3
+LEVEL = 3
+BATCH_SIZE = 32
 
 #question generation
 pth = os.path.join(os.path.dirname(__file__), "taxonomy","storage", "createdTaxonomy.json" )
@@ -150,10 +161,12 @@ weighedGraph = make_weighed_node(graph)
 print("weighted graph is ", weighedGraph)
 
 async def generate_samples()->None:
+    random.seed(24601)
     samples:List[List[Leaf]] = list()
     for i in range(NUM_SAMPLES):
+        random.seed(random.randint(0, 1000000) +1)
         samples.append(get_k_children(weighedGraph, NUM_LEAFS, LEVEL)[0])
-        
+    print("len(samples) is ", len(samples))
     for i in range(0, len(samples), BATCH_SIZE):
         subSamples = samples[i:i+BATCH_SIZE] 
         promisedQs = list() 
@@ -161,13 +174,18 @@ async def generate_samples()->None:
         print("question gen")
         for sample in subSamples:
             #user defined
-            text, sysPrompt = getTextFromSample(sample, hash_text)
+            text, sysPrompt, verifier = getTextFromSample(sample, hash_text)
+            # print(sysPrompt)
+            # print("\n"*10)
+            # print(text)
+            # input()
             metas.append({
                 "text": text,
-                "sysPrompt": sysPrompt
+                "sysPrompt": sysPrompt,
+                "verifier": verifier
             })
 
-            promisedQ = prompt(sysPrompt, text)
+            promisedQ = prompt(sysPrompt, text, verifier = verifier)
             promisedQs.append(promisedQ)
         
         batchQs = await asyncio.gather(*promisedQs)
@@ -182,15 +200,17 @@ async def generate_samples()->None:
             #store our question info and generate our answe info
             for sample, meta, q in zip(samples, metas, batchQs):
                 _id = len(questions)
+                qVerifier = meta["verifier"]
                 questions[_id] = {
                     "text": meta["text"],
                     "sysPrompt": meta["sysPrompt"],
-                    "q": q
+                    "q": qVerifier(q),
+                    "generation": GENERATION
                 }
 
                 #now we can get the answers 
                 #how many propmts / answer
-                text, sysPrompt, verifier = getAnswerTextFromSample(sample, meta["text"], hash_text)
+                text, sysPrompt, verifier = getAnswerTextFromSample(sample, meta["text"], hash_text, q)
 
                 # if (not _id in answers): answers[_id] = list()
                 answer = prompt(sysPrompt, text, verifier=verifier)
@@ -214,8 +234,6 @@ async def generate_samples()->None:
         #now, we can save our answers
         with open(answersDir, 'w') as f:
             json.dump(answers, f)
-
-        break
 
         
 
